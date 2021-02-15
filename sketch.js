@@ -24,13 +24,15 @@ function setup() {
 
   balloonPosition.update({
     x: 187,
-    y: 400
+    y: 400,
+    scale: 0.6
   })
  
   balloonPosition.on("value", function(data){
     var pos = data.val();
     balloon1.x = pos.x;
     balloon1.y = pos.y;
+    balloon1.scale = pos.scale;
   });
  
 }
@@ -40,31 +42,44 @@ function draw() {
 
   if(keyDown(UP_ARROW)) {
 
-    if(balloon1.scale >= 0.35) {
-      balloon1.scale-=0.01;
-    } else {
-      balloon1.scale-=0;
-    }
+    // if(balloon1.scale >= 0.35) {
+    //   balloon1.scale-=0.01;
+    // } else {
+    //   balloon1.scale-=0;
+    // }
+
+    
 
     dataBase.ref("balloon/position").update({
       //x: balloon1.x + x,
-      y: balloon1.y - 10
+      y: balloon1.y - 10,
+      scale: balloon1.scale-0.01,
+      
     })
+
+    if(balloon1.scale <= 0.35) {
+      balloon1.scale = 0.35;
+    }
 
   }
 
   if(keyDown(DOWN_ARROW)) {
 
-    if(balloon1.scale <= 0.6) {
-      balloon1.scale+=0.01;
-    } else {
-      balloon1.scale+=0;
-    }
+    // if(balloon1.scale <= 0.6) {
+    //   balloon1.scale+=0.01;
+    // } else {
+    //   balloon1.scale+=0;
+    // }
 
     dataBase.ref("balloon/position").update({
       //x: balloon1.x + x,
-      y: balloon1.y + 10
+      y: balloon1.y + 10,
+      scale: balloon1.scale+0.01
     })
+
+    if(balloon1.scale >= 0.6) {
+      balloon1.scale = 0.6;
+    }
   }
   if(keyDown(RIGHT_ARROW)) {
 
@@ -82,7 +97,7 @@ function draw() {
   }
 
   drawSprites();
-  console.log(balloon1.scale);
+  //console.log(balloon1.scale);
 
   textSize(20);
   text("Use arrow keys to move Hot Air Balloon",width/20,height/15);
